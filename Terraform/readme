@@ -1,0 +1,9 @@
+파일 구조
+.
+├── main.tf
+├── variables.tf
+├── ec2.tf
+├── autoscale.tf
+├── lb.tf
+├── karpenter.tf
+├── rds.tf
