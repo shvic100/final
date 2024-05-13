@@ -10,7 +10,8 @@ COPY requirements.txt ./
 
 # 필요한 Python 패키지를 설치합니다.
 # requirements.txt 파일에 FastAPI와 uvicorn을 포함해 필요한 모든 패키지를 명시해야 합니다.
-RUN pip install --no-cache-dir -r requirements.txt
+RUN sudo pip install --no-cache-dir -r requirements.txt
+RUN sudo pip install --no-cache-dir mysql-connector-python
 
 # 컨테이너가 시작할 때 실행할 명령을 지정합니다. Uvicorn으로 FastAPI 애플리케이션을 실행합니다.
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8090"]
