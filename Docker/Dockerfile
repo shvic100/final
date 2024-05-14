@@ -5,13 +5,12 @@ FROM python:3.9-slim
 WORKDIR /app
 
 # main.py 파일과 requirements.txt 파일을 컨테이너의 작업 디렉토리로 복사합니다.
-COPY main.py ./
-COPY requirements.txt ./
+COPY main.py .
+COPY requirements.txt .
 
 # 필요한 Python 패키지를 설치합니다.
 # requirements.txt 파일에 FastAPI와 uvicorn을 포함해 필요한 모든 패키지를 명시해야 합니다.
-RUN sudo pip install --no-cache-dir -r requirements.txt
-RUN sudo pip install --no-cache-dir mysql-connector-python
+RUN  pip install --upgrade pip && pip install --no-cache-dir -r requirements.txt
 
 # 컨테이너가 시작할 때 실행할 명령을 지정합니다. Uvicorn으로 FastAPI 애플리케이션을 실행합니다.
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8090"]
+CMD uvicorn main:app --host 0.0.0.0 --port 8090 --reload
