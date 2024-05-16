@@ -9,7 +9,7 @@ resource "aws_eks_cluster" "eks" {
   vpc_config {
     subnet_ids = var.subnet_ids  # EKS 클러스터에 사용할 서브넷 ID 목록
   }
-
+  
   tags = var.tags  # 태그 설정
 }
 
