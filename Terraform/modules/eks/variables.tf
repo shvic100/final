@@ -31,6 +31,7 @@ variable "node_role_arn" {
 variable "subnet_ids" {
   description = "A list of subnet IDs for the EKS cluster"  # EKS 클러스터에 사용할 서브넷 ID 목록
   type        = list(string)
+  default     = ["subnet-00d02eafb4e506765", "subnet-09edd79d5a32315c0"]
 }
 
 variable "instance_types" {
@@ -60,5 +61,8 @@ variable "min_capacity" {
 variable "tags" {
   description = "A map of tags to assign to the resources"  # 리소스에 할당할 태그 목록
   type        = map(string)
-  default     = {}
+  default     = {
+    NAME = "EOF-subnet-public1-ap-northeast-1a"
+    Environment = "EOF"
+    }
 }
