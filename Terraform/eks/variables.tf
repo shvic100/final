@@ -19,7 +19,7 @@ variable "node_group_name" {
 }
 
 variable "node_role_arn" {
-  description = "The ARN of the IAM role to use for the node group"  # 노드 그룹에 할당할 IAM 역할의 ARN
+  description = "arn:aws:iam::058264352854:instance-profile/EC2"  # 노드 그룹에 할당할 IAM 역할의 ARN
   type        = string
 }
 
