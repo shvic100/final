@@ -4,7 +4,7 @@ variable "region" {
 }
 
 variable "cluster_name" {
-  description = "The name of the EKS cluster"  # EKS 클러스터 이름
+  description = "EOF_EKS"  # EKS 클러스터 이름
   type        = string
 }
 
@@ -14,7 +14,7 @@ variable "cluster_role_arn" {
 }
 
 variable "node_group_name" {
-  description = "The name of the node group"  # 노드 그룹 이름
+  description = "EOF"  # 노드 그룹 이름
   type        = string
 }
 
@@ -35,17 +35,17 @@ variable "instance_types" {
 
 variable "desired_capacity" {
   description = "The desired number of nodes in the node group"  # 원하는 노드 수
-  type        = number
+  type        = 1
 }
 
 variable "max_capacity" {
   description = "The maximum number of nodes in the node group"  # 최대 노드 수
-  type        = number
+  type        = 3
 }
 
 variable "min_capacity" {
   description = "The minimum number of nodes in the node group"  # 최소 노드 수
-  type        = number
+  type        = 1
 }
 
 variable "tags" {
