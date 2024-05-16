@@ -3,7 +3,7 @@ provider "aws" {
 }
 
 module "eks" {
-  source           = "modules/eks"  # EKS 모듈 경로
+  source           = "./modules/eks"  # EKS 모듈 경로
   region           = var.region  # 사용할 AWS 리전
   cluster_name     = var.cluster_name  # EKS 클러스터 이름
   cluster_role_arn = var.cluster_role_arn  # EKS 클러스터에 할당할 IAM 역할의 ARN
