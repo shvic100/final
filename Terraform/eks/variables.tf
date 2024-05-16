@@ -9,7 +9,7 @@ variable "cluster_name" {
 }
 
 variable "cluster_role_arn" {
-  description = "The ARN of the IAM role to use for the EKS cluster"  # EKS 클러스터에 할당할 IAM 역할의 ARN
+  description = "arn:aws:iam::058264352854:role/AmazonEKSClusterPolicy"  # EKS 클러스터에 할당할 IAM 역할의 ARN
   type        = string
 }
 
