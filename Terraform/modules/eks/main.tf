@@ -14,7 +14,7 @@ resource "aws_eks_cluster" "eks" {
 }
 
 resource "aws_eks_node_group" "node_group" {
-  cluster_name    = aws_eks_cluster.eks.name  # 클러스터 이름
+  cluster_name    = var.cluster_name  # 클러스터 이름
   node_group_name = var.node_group_name  # 노드 그룹 이름
   node_role_arn   = var.node_role_arn  # 노드 그룹에 할당된 IAM 역할 ARN
   subnet_ids      = var.subnet_ids  # 노드 그룹에 사용할 서브넷 ID 목록
