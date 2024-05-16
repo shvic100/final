@@ -1,5 +1,5 @@
 provider "aws" {
-  region = var.region  # 사용할 AWS 리전 설정
+  region = "ap-northeast-1"  # 사용할 AWS 리전 설정
 }
 
 module "eks" {
