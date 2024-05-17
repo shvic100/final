@@ -49,6 +49,11 @@ variable "min_capacity" {
   type        = number
 }
 
+variable "kubernetes_version" {
+  description = "The Kubernetes version for the EKS cluster" # 원하는 Kubernetes 버전으로 설정
+  type        = string
+}
+
 variable "tags" {
   description = "A map of tags to assign to the resources"  # 리소스에 할당할 태그 목록
   type        = map(string)
