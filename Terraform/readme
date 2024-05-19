@@ -1,9 +1,9 @@
 파일 구조
-.
+modules/eks
 ├── main.tf
 ├── variables.tf
-├── ec2.tf
-├── autoscale.tf
-├── lb.tf
-├── karpenter.tf
-├── rds.tf
+├── terraform.tfvars
+├── outputs.tf
+
+#kubectl 설정 문제 발생 시 kubeconfig 파일 업데이트
+aws eks update-kubeconfig --region ap-northeast-1 --name EOF_EKS
