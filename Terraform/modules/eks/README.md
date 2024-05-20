@@ -1,13 +1,13 @@
-**1.kubectl 설치**
+**#Terraform 구성 후 kubectl 명령어 동작 안할 경우 아래 내용 수행하기.**
+
+**1. kubectl 설치**
 Snap or apt 저장소 둘 중 하나의 방식으로 kubectl 설치하기
 
-
-**Snap을 사용하여 kubectl 설치** \n
+**Snap을 사용하여 kubectl 설치** 
 sudo snap install kubectl --classic
 
 **설치가 제대로 되었는지 버전을 확인합니다.**
 kubectl version --client
-
 
 **2) Google Cloud의 apt 저장소로  kubectl 설치 # 1 or 2 둘 중 하나만 수행**
 
