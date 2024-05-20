@@ -1,0 +1,32 @@
+1.kubectl 설치
+ 1) Snap을 사용하여 kubectl 설치
+sudo snap install kubectl --classic
+ 2) 설치가 제대로 되었는지 버전을 확인합니다.
+kubectl version --client
+
+
+2) Google Cloud의 apt 저장소로  kubectl 설치 # 1 or 2 둘 중 하나만 수행
+ 2-1) Google Cloud의 apt 저장소를 추가합니다.
+sudo apt-get update
+sudo apt-get install -y apt-transport-https gnupg2 curl
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+ 2-2) kubectl을 설치합니다.
+sudo apt-get update
+sudo apt-get install -y kubectl
+ 2-3) 설치가 제대로 되었는지 버전을 확인합니다.
+kubectl version --client
+
+
+2. kubectl 설정 문제 발생 시
+1) aws-iam-authenticator 설치 # 인증 권한을 가지고 오지 못해서 발생하는 문제
+ 1-1) aws-iam-authenticator 바이너리를 다운로드하고 실행 권한을 설정합니다.
+curl -o aws-iam-authenticator https://amazon-eks.s3.us-west-2.amazonaws.com/1.19.6/2021-01-05/bin/linux/amd64/aws-iam-authenticator
+chmod +x ./aws-iam-authenticator
+ 1-2) aws-iam-authenticator를 시스템 경로로 이동시킵니다.
+sudo mv aws-iam-authenticator /usr/local/bin/
+ 1-3) 설치가 제대로 되었는지 버전을 확인합니다.
+aws-iam-authenticator version
+
+3. kubectl 설정 문제 발생 시 kubeconfig 파일 업데이트
+aws eks update-kubeconfig --region ap-northeast-1 --name EOF_EKS
