@@ -2,7 +2,7 @@
 Snap or apt 저장소 둘 중 하나의 방식으로 kubectl 설치하기
 
 
-**Snap을 사용하여 kubectl 설치**
+**Snap을 사용하여 kubectl 설치** \n
 sudo snap install kubectl --classic
 
 **설치가 제대로 되었는지 버전을 확인합니다.**
