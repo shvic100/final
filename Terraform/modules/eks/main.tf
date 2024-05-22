@@ -68,7 +68,7 @@ resource "aws_internet_gateway" "EOF-igw" {
 resource "aws_default_route_table" "public-route_table" {
   default_route_table_id = aws_vpc.EOF-vpc.default_route_table_id  # 기본 라우팅 테이블 ID 참조
   tags = {
-    Name = "EOF-default-route-table"  # 태그 설정
+    Name = "EOF-public-route-table"  # 태그 설정
   }
 }
 
@@ -140,8 +140,6 @@ module "eks" {
   cluster_version = var.kubernetes_version  # 쿠버네티스 버전
   vpc_id          = aws_vpc.EOF-vpc.id  # VPC ID 참조
   subnet_ids = [
-    aws_subnet.public-a.id,
-    aws_subnet.public-c.id,
     aws_subnet.private-a.id,
     aws_subnet.private-c.id
   ]
@@ -184,4 +182,76 @@ resource "aws_security_group_rule" "eks_node_add_egress" {
   to_port           = 0  # 종료 포트
   protocol          = "-1"  # 모든 프로토콜
   cidr_blocks       = ["0.0.0.0/0"]  # 허용할 CIDR 블록
+}
+
+# ALB 보안 그룹 생성
+resource "aws_security_group" "alb_sg" {  # 리소스 이름을 일관되게 사용
+  vpc_id = aws_vpc.EOF-vpc.id  # VPC ID 참조
+
+  ingress {
+    from_port   = 80  # HTTP 포트
+    to_port     = 80  # HTTP 포트
+    protocol    = "tcp"  # TCP 프로토콜
+    cidr_blocks = ["0.0.0.0/0"]  # 허용할 CIDR 블록
+  }
+
+  ingress {
+    from_port   = 443  # HTTPS 포트
+    to_port     = 443  # HTTPS 포트
+    protocol    = "tcp"  # TCP 프로토콜
+    cidr_blocks = ["0.0.0.0/0"]  # 허용할 CIDR 블록
+  }
+
+  egress {
+    from_port   = 0  # 시작 포트
+    to_port     = 0  # 종료 포트
+    protocol    = "-1"  # 모든 프로토콜
+    cidr_blocks = ["0.0.0.0/0"]  # 허용할 CIDR 블록
+  }
+
+  tags = {
+    Name = "EOF-AppLB-SG"  # 태그 설정
+  }
+}
+
+# ALB 생성
+resource "aws_lb" "app_lb" {
+  name               = "app-loadbalancer"  # ALB 이름
+  internal           = false  # 외부용 ALB
+  load_balancer_type = "application"  # ALB 타입
+  security_groups    = [aws_security_group.alb_sg.id]  # 보안 그룹 설정
+  subnets            = [aws_subnet.public-a.id, aws_subnet.public-c.id]  # 서브넷 설정
+
+  enable_deletion_protection = false  # 삭제 보호 비활성화
+  tags = {
+    Name = "EOF-App-LB"  # 태그 설정
+  }
+}
+
+# ALB 타겟 그룹 생성
+resource "aws_lb_target_group" "app_tg" {
+  name     = "app-target-group"  # 타겟 그룹 이름
+  port     = 80  # 포트 번호
+  protocol = "HTTP"  # 프로토콜
+  vpc_id   = aws_vpc.EOF-vpc.id  # VPC ID 참조
+
+  tags = {
+    Name = "EOF-App-TG"  # 태그 설정
+  }
+}
+
+# ALB 리스너 생성 (HTTP)
+resource "aws_lb_listener" "app_listener_http" {
+  load_balancer_arn = aws_lb.app_lb.arn  # ALB ARN 참조
+  port              = "80"  # 리스너 포트
+  protocol          = "HTTP"  # 프로토콜
+
+  default_action {
+    type             = "forward"  # 액션 타입
+    target_group_arn = aws_lb_target_group.app_tg.arn  # 타겟 그룹 ARN 참조
+  }
+
+  tags = {
+    Name = "EOF-App-Listener-HTTP"  # 태그 설정
+  }
 }
