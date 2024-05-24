@@ -1,3 +1,7 @@
+a. cert-manager CRD 설치
+kubectl apply -f https://github.com/cert-manager/cert-manager/releases/download/v1.14.5/cert-manager.crds.yaml
+
+
 cert-manager 설치
 Cert-manager는 쿠버네티스 클러스터 내에서 TLS 인증서를 자동으로 프로비저닝 및 관리하는 오픈소스이다.
 
@@ -6,8 +10,21 @@ kubectl apply --validate=false -f https://github.com/cert-manager/cert-manager/r
 
 AWS Load Balancer Controller 설치
 EKS에서 ALB를 Ingress로 사용하려면 AWS Load Balancer Controller를 설치해야 합니다.
+# AWS CLI 설치
+curl "https://awscli.amazonaws.com/AWSCLIV2.pkg" -o "AWSCLIV2.pkg"
+sudo installer -pkg AWSCLIV2.pkg -target /
 
+# eksctl 설치
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin
+
+
+
+
+2. IAM OIDC 제공자 생성
 eksctl utils associate-iam-oidc-provider --cluster EOF-cluster --approve
+
+eksctl utils associate-iam-oidc-provider --region ap-northeast-1 --cluster EOF-cluster --approve
 
 2.1 필요한 IAM 정책 생성
 AWS Load Balancer Controller가 ALB를 관리할 수 있도록 필요한 IAM 정책을 생성합니다.
@@ -32,6 +49,11 @@ eksctl create iamserviceaccount \
 
 #서비스 계정 생성 확인
 kubectl get serviceaccount aws-load-balancer-controller -n kube-system
+kubectl get sa -n kube-system
+
+#기존 서비스 계정 삭제
+kubectl delete serviceaccount aws-load-balancer-controller -n kube-system
+
 
 
 helm 설치
@@ -54,7 +76,8 @@ helm install aws-load-balancer-controller eks/aws-load-balancer-controller \
 kubectl get pods -n kube-system | grep aws-load-balancer-controller
 
 
-
+#기존 helm release 삭제
+helm uninstall aws-load-balancer-controller -n kube-system
 
 
 ## 주의할 점 ##
