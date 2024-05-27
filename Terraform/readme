@@ -1,6 +1,21 @@
-파일 구조
-modules/eks
+파일구조
 ├── main.tf
 ├── variables.tf
-├── terraform.tfvars
 ├── outputs.tf
+├── modules
+│   ├── vpc
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   └── outputs.tf
+│   ├── iam
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   └── outputs.tf
+│   ├── eks
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   └── outputs.tf
+│   ├── alb
+│   │   ├── main.tf
+│   │   ├── variables.tf
+│   │   └── outputs.tf
