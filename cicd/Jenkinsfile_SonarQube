@@ -7,6 +7,9 @@ pipeline {
         DOCKER_TAG = '1.0' // Docker 이미지 태그
         DOCKER_CREDENTIALS_ID = 'docker-hub-credentials' // Docker Hub 인증 정보 ID
     }
+    triggers {
+        pollSCM('* * * * *') // 매 분마다 Git 변경 사항 확인
+    }
     stages {
         stage('Checkout') { // 첫 번째 단계: Git 저장소에서 코드 체크아웃
             steps {
@@ -35,7 +38,7 @@ pipeline {
         }
         stage("Slack Notification") { // 세 번째 단계: SonarQube 분석 결과에 대한 Slack 알림 전송
             steps {
-                echo 'slack test' // Slack 알림 테스트 메시지 출력
+                echo 'Sending Slack Notification...' // Slack 알림 테스트 메시지 출력
             }
             post {
                 success { // SonarQube 분석 성공 시
@@ -56,7 +59,7 @@ pipeline {
         }
         stage('Docker Image Build and Push') { // 네 번째 단계: Docker 이미지 빌드 및 푸시
             when {
-                expression { return currentBuild.result == 'SUCCESS' } // 빌드 성공 시에만 실행
+                expression { return currentBuild.resultIsBetterOrEqualTo('SUCCESS') } // 빌드 성공 시에만 실행
             }
             environment {
                 NEW_TAG = "${DOCKER_TAG}.${env.BUILD_NUMBER}"
