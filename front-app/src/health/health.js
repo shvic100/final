@@ -1,33 +1,33 @@
-// const express = require('express');
-// const app = express();
-// const port = 3000;
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import './health.css';
 
-// app.get('/health', (req, res) => {
-//     res.status(200).send('OK');
-// });
+const Health = () => {
+  const [status, setStatus] = useState('Loading...');
 
-// app.listen(port, () => {
-//     console.log(`Frontend app listening at http://www.cloudeof.com:${port}`);
-// });
+  useEffect(() => {
+    const fetchHealthStatus = async () => {
+      try {
+        const response = await axios.get('http://www.cloudeof.com:3000/health');
+        if (response.status === 200) {
+          setStatus('Server is healthy');
+        } else {
+          setStatus('Server is not healthy');
+        }
+      } catch (error) {
+        setStatus('Server is not healthy');
+      }
+    };
 
-const express = require('express');
-const path = require('path');
-const app = express();
-const port = 3000;
+    fetchHealthStatus();
+  }, []);
 
-// 정적 파일 제공
-app.use(express.static(path.join(__dirname, 'build')));
+  return (
+    <div className="health">
+      <h2>Health Check</h2>
+      <p>{status}</p>
+    </div>
+  );
+}
 
-// Health check 엔드포인트
-app.get('/health', (req, res) => {
-    res.status(200).send('OK');
-});
-
-// 모든 요청에 대해 React 앱 제공
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
-
-app.listen(port, () => {
-    console.log(`Frontend app listening at http://www.cloudeof.com:${port}`);
-});
+export default Health;
