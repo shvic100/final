@@ -1,0 +1,16 @@
+/* execute.css */
+
+.Execute {
+    margin: 120px;
+  }
+  
+  .test-details {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+  }
+  
+  .test-details p {
+    margin: 5px 0;
+  }
+  
