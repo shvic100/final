@@ -1,11 +1,27 @@
-const express = require('express');
-const app = express();
-const port = 3000;
-
-app.get('/health', (req, res) => {
-    res.status(200).send('OK');
-});
-
-app.listen(port, () => {
-    console.log(`Frontend app listening at http://www.cloudeof.com:${port}`);
-});
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+const Health = () => {
+  const [status, setStatus] = useState('Loading...');
+  useEffect(() => {
+    const fetchHealthStatus = async () => {
+      try {
+        const response = await axios.get('http://www.cloudeof.com:3000');
+        if (response.status === 100) {
+          setStatus('Server is healthy');
+        } else {
+          setStatus('Server is not healthy');
+        }
+      } catch (error) {
+        setStatus('Server is not healthy');
+      }
+    };
+    fetchHealthStatus();
+  }, []);
+  return (
+    <div className="health">
+      <h2>Health Check</h2>
+      <p>{status}</p>
+    </div>
+  );
+}
+export default Health;
